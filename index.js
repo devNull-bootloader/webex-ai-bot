@@ -118,22 +118,17 @@ framework.hears(
       return;
     }
 
-    await bot.startTyping();
-
     try {
       const reply = await askGroq(trigger.roomId, userText);
       await bot.say("markdown", reply);
     } catch (err) {
       console.error("Groq error:", err.message);
 
-      // Handle rate limit specifically
       if (err.status === 429) {
-        await bot.say("⏳ I've hit my rate limit for a moment. Please try again in a few seconds!");
+        await bot.say("⏳ Kurze Pause — bitte in ein paar Sekunden nochmal versuchen!");
       } else {
-        await bot.say("⚠️ Sorry, I couldn't reach the AI right now. Please try again in a moment.");
+        await bot.say("⚠️ Es gab ein Problem mit der KI. Bitte nochmal versuchen.");
       }
-    } finally {
-      await bot.stopTyping();
     }
   },
   10
